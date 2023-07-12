@@ -27,7 +27,7 @@ public class Main {
         midiChannels[0].programChange(41);
         Receiver receiver = synthesizer.getReceiver();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Hello, world!");
+        System.out.println("Hello, world!!!");
         System.out.println("Would you like to play from file? y/n");
         String answer = scanner.nextLine().trim().toLowerCase();
         if (answer.equals("y")) {
