@@ -1,14 +1,11 @@
 import javax.sound.midi.*;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -25,42 +22,43 @@ public class Main {
         // Выбираем способ проигрывания MIDI звуков
         System.out.println("How would you like to play MIDI sound? (Type \"exit\" to quit) \n1.From txt file \n2.Manually \n3.From MIDI file");
         String answer = scanner.nextLine().trim().toLowerCase();
-        if (answer.equals("1")) {
-            System.out.println("Would you like to play from file? y/n");
-            answer = scanner.nextLine().trim().toLowerCase();
-            if (answer.equals("y")) {
-                //String filePath = "C:\\Games\\dotes.txt";
-                playFromFile(scanner, receiver);
-            }
-            System.out.println("Goodbye!");
-            return;
-        } else if (answer.equals("2")) {
-            System.out.println("Would you like to play manually? y/n");
-            answer = scanner.nextLine().trim().toLowerCase();
-            if (answer.equals("y")) {
-                playManually(scanner, receiver);
-            }
-            System.out.println("Goodbye!");
-            return;
-        } else if (answer.equals("3")) {
-            System.out.println("Would you like to play from MIDI file? y/n");
-            answer = scanner.nextLine().trim().toLowerCase();
-            if (answer.equals("y")) {
-                playFromMIDI(scanner, receiver);
-            }
-            System.out.println("Goodbye!!");
-            return;
-        } else if (answer.equals("exit")) {
-            System.out.println("Goodbye!");
-            return;
-        } else {
-            System.out.println("Try again ;)");
+        switch (answer) {
+            case "1":
+                System.out.println("Would you like to play from file? y/n");
+                answer = scanner.nextLine().trim().toLowerCase();
+                if (answer.equals("y")) {
+                    //String filePath = "C:\\Games\\dotes.txt";
+                    playFromFile(scanner, receiver);
+                }
+                System.out.println("Goodbye!");
+                return;
+            case "2":
+                System.out.println("Would you like to play manually? y/n");
+                answer = scanner.nextLine().trim().toLowerCase();
+                if (answer.equals("y")) {
+                    playManually(scanner, receiver);
+                }
+                System.out.println("Goodbye!");
+                return;
+            case "3":
+                System.out.println("Would you like to play from MIDI file? y/n");
+                answer = scanner.nextLine().trim().toLowerCase();
+                if (answer.equals("y")) {
+                    playFromMIDI(scanner);
+                }
+                System.out.println("Goodbye!!");
+                return;
+            case "exit":
+                System.out.println("Goodbye!");
+                return;
+            default:
+                System.out.println("Try again ;)");
         }
         synthesizer.close();
         scanner.close();
     }
 
-    private static void playFromMIDI(Scanner scanner, Receiver receiver) throws InvalidMidiDataException, IOException, MidiUnavailableException {
+    private static void playFromMIDI(Scanner scanner) throws InvalidMidiDataException, IOException, MidiUnavailableException {
         System.out.println("Enter path to MIDI file: ");
         String filePath = scanner.nextLine().trim();
         Sequence sequence = MidiSystem.getSequence(new File(filePath));
@@ -91,6 +89,7 @@ public class Main {
         String[] notes = content.toUpperCase().split(" ");
         playNotes(receiver, notes);
     }
+
     private static void playManually(Scanner scanner, Receiver receiver) throws InvalidMidiDataException, InterruptedException {
         System.out.println("Please enter notes:"); // (or \"exit\" to quit):");
         String text = scanner.nextLine().trim().toUpperCase();
